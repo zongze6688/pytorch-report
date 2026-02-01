@@ -3,13 +3,13 @@
 ## 前言
 本文是一个简短的pytorch入门实验报告。
 
-本报告中提及的所有代码均在：
+本文中提及的的代码均在https://github.com/zongze6688/pytorch-report
 
-由于此pytorch入门实验几乎完全在碎片化时间中完成，因此**大多数相关代码都被AI润色**或**大篇幅修改**过，但所有核心代码最初都为手工完成。
+由于此pytorch入门实验几乎完全在碎片化时间中完成，因此**大多数相关代码都被AI润色**或**修改**过，但所有核心代码最初都为手工完成。
 
 本文所有观点/结论均为**个人观点**，部分甚至**没有严谨的实验数据支撑**
 
-本文完全手工完成，**没有任何AI生成的部分**，可以放心阅读 ！！！
+本文完全手工完成，**没有任何AI生成的部分**，可以放心阅读 ！！！😊
 
 ## Task 1 ： 使用深度学习文本分类
 
@@ -17,18 +17,18 @@
 
 ### 1. **手动实现单个线性层**
 
-通过自定义softmax, crossentropy-loss, SGD, mean-squared-loss, 实现了单个线性层的训练，详见**pytorch_task1.py**。
+通过自定义softmax, crossentropy-loss, SGD, mean-squared-loss, 实现了单个线性层的训练，详见[**pytorch_task1.py**](https://github.com/zongze6688/pytorch-report/blob/main/pytorch_tasks/pytorch_task1.py)。
 这个方法中没有使用torch.nn中的任何函数
 
 ### 2. **带有残差连接的线性层**
 
 手动实现过程没有使用正则化技术，因此效果不佳（acc 26%左右.....）
 
-在**pytorch_task1_MLP.py**中，实现了带有残差网络的全连接层，并使用dropout正则化和Adam优化器进行训练。准确率接近50%。
+在[**pytorch_task1_MLP.py**](https://github.com/zongze6688/pytorch_tasks/pytorch_task1_MLP.py)中，实现了带有残差网络的全连接层，并使用dropout正则化和Adam优化器进行训练，准确率接近50%
 
 ### 3. **卷积网络（CNN）**
 
-在**pytorch_task1_CNN.py**中，加入了**词嵌入（word_embedding）**,并探索了多种卷积网络，包括：
+在[**pytorch_task1_CNN.py**](https://github.com/zongze6688/pytorch_tasks/pytorch_task1_CNN.py)中，加入了**词嵌入（word_embedding）**,并探索了多种卷积网络，包括：
 
 1. 较浅的卷积网络及其优化版本
 2. 较深的卷积网络
@@ -39,29 +39,29 @@
 
 ### 4. **循环神经网络**
 
-在**pytorch_task1_RNN.py**中，探索了使用循环网络进行文本分类，尝试了**RNN GRU LSTM**并使用num_layers=2的双向网络，发现最终效果不是很理想（acc 45%左右）。在引入注意力机制后，效果有所提升（acc 接近50%）
+在[**pytorch_task1_RNN.py**](https://github.com/zongze6688/pytorch_tasks/pytorch_task1_RNN.py)中，探索了使用循环网络进行文本分类，尝试了**RNN GRU LSTM**并使用num_layers=2的双向网络，发现最终效果不是很理想（acc 45%左右）。在引入注意力机制后，效果有所提升（acc 接近50%）
 
 ### 5. **Transformer**
 
-在**pytorch_task1_Transfromer.py**中，使用了传统的transformer进行训练（**位置编码+多头自注意力**）。然而，效果并不理想（acc 47%左右）
+在[**pytorch_task1_Transfromer.py**](https://github.com/zongze6688/pytorch_tasks/pytorch_task1_Transformer.py)中，使用了传统的transformer进行训练（**位置编码+多头自注意力**）。然而，效果并不理想（acc 47%左右）
 
 ### 6. **微调BERT模型**
  
-鉴于以上所有模型的效果均不理想，我分别使用**BERT-base**和**BERT-large**在数据集上进行微调（见**BERT_for_pytorch_tesk.py**）。微调后，BERT-large准确率大约68%，BERT-base准确率大约63%。尽管模型准确率看起来并不高，但模型在对抗样本上表现良好，这说明BERT模型已经能够较好的理解句子的情感色彩。
+鉴于以上所有模型的效果均不理想，我分别使用**BERT-base**和**BERT-large**在数据集上进行微调（见[**BERT_for_pytorch_tesk.py**](https://github.com/zongze6688/pytorch_tasks/BERT_for_pytorch_task.py)）。微调后，BERT-large准确率大约68%，BERT-base准确率大约63%。尽管模型准确率看起来并不高，但模型在对抗样本上表现良好，这说明BERT模型已经能够较好的理解句子的情感色彩。
 
-运行**reuse_BERT.py**可以让模型进行在线预测
+**reuse_BERT.py**可以让模型进行预测
 
 ### Task 1 总结
 
 鉴于不同模型在训练数据上的表现均不是很高，我认为这个数据可能就是训练不太好，但从BERT模型表现来看，这个数据仍然非常有意义。
 
-总结上面的不同模型，排除微调BERT以外，准确率最好的模型是**带有残差连接的线性层**和**加入注意力机制的LSTM**（均为50%左右）。Transformer模型的表现并不是很好，可能是因为数据量过少，而transformer通常需要大量训练数据。
+总结上面的不同模型，排除微调BERT以外，准确率最好的模型是**带有残差连接的线性层**和**加入注意力机制的LSTM**（均为50%左右）。从零开始训练Transformer模型的表现并不是很好，可能是因为数据量过少，而transformer通常需要大量训练数据。
 
 ## Task 2 ： 使用Transformer实现3+3位数加法（有待深入研究...）
 
 ### **实验内容**
 
-使用encoder-decoder的完整Transformer进行3+3位数加法的训练，所有数字均转化成字符，保留‘+’号。**每个epoch都随机初始化训练样本一次。**实验代码在**Transformer_3_3.py**。
+使用encoder-decoder的完整Transformer进行3+3位数加法的训练，所有数字均转化成字符，保留‘+’号。**每个epoch都随机初始化训练样本一次。**实验代码在[**Transformer_3_3.py**](https://github.com/zongze6688/pytorch_tasks/Transformer_3_3.py)。
 
 在训练50个epoch之后，模型开始能够进行一些模糊的加法，并且对数字的大小有一定感知。然而，在绝大多数情况下，模型仍然无法做出准确的加法。
 
@@ -71,9 +71,10 @@
 
 ### **实验内容**
 
-使用chinese-poetry数据集进行训练，包括训练集388599条，测试集1710条。（本试验中没有使用测试集）
+使用[chinese-poetry](http://www.modelscope.cn/datasets/modelscope/chinese-poetry-collection.git)数据集进行训练，使用其中的train.csv包括训练集388599条，验证集集1710条。（本试验中没有使用test.csv）
 
-由于诗歌生成通常不需要过多的prompt，因此使用decoder-only的模型，训练20个epoch。（经过尝试，encoder-decoder的模型难以训练且效果很差）
+由于诗歌生成通常不需要过多的prompt，因此使用decoder-only的模型，训练20个epoch。
+（经过尝试，encoder-decoder的模型难以训练且效果很差）
 
 ### **模型结构总结**
 
@@ -90,7 +91,7 @@
 9. 较高的dropout=0.3 **训练数据量不大，防止过拟合**
 10. 保留检查点：定期保存中间检查点支持断点恢复训练（**吸取之前的教训......**）
 
-直接运行**generate_poem.py**即可生成诗歌。
+训练代码在[**train_poem_model.py**](MyOwnLM/train_poem_model.py)
 
 ### **生成示例**
 
